@@ -1,4 +1,6 @@
 // src/components/Scoreboard.js
+
+import './Scoreboard.scss'
 import { useState } from "react";
 import AddPlayer from "./AddPlayer";
 import Player from "./Player";
@@ -12,7 +14,8 @@ function compare_name(player_a, player_b) {
 }
 
 
-export default function Scoreboard() {
+
+export default function Scoreboard(props) {
   const [players, set_players] = useState([
     { id: 1, name: "Violeta", score: 11 },
     { id: 2, name: "Eszter", score: 14 },
@@ -20,7 +23,8 @@ export default function Scoreboard() {
     { id: 4, name: "Lisa", score: 42 },
   ]);
 
-  const [sort_by, set_sort_by] = useState("score"); 
+  const [sort_by, set_sort_by] = useState(""); 
+
 
   const players_sorted = [...players].sort(
     sort_by==="name" ? compare_name : compare_score
@@ -33,6 +37,60 @@ export default function Scoreboard() {
 };
 
 
+const addPlayer = (name) => {
+  
+  const newPlayer = {id: players.length + 1, name: name, score: 0}
+
+  const newArray = [newPlayer, ...players]
+  set_players(newArray)
+}
+
+const incrementScore = (id) => {
+  console.log("player to update:", id)
+
+  const updatedArray = players.map(player => {
+    if(player.id === id){
+      return {
+        ...player,
+        score: player.score +1
+      }
+    } else {
+     return player 
+    }})
+    set_players(updatedArray)
+}
+
+const resetScore = () => {
+
+  const updatedArray = players.map(player => {
+    
+      return {
+        ...player,
+        score: player.score = 0
+      }
+    })
+    set_players(updatedArray)
+}
+
+const randomiseScore = () => {
+
+  const updatedArray = players.map(player => {
+      return {
+        ...player,
+        score: player.score = Math.floor(Math.random() * (100-0 +1)) + 0
+      }
+      })
+    set_players(updatedArray)
+}
+
+const onClickReset = () => {
+  resetScore(players.id)
+}
+
+const onClickRandomise = () => {
+  randomiseScore(players.id)
+}
+
 
   return (
     <div className="Scoreboard">
@@ -43,13 +101,24 @@ export default function Scoreboard() {
           <option value="name">Sort by name</option>
         </select>
       </p>
-      <p>Player's scores:</p>
+      <p>Player's scores:
+        <button onClick={onClickReset}>Reset</button>
+        <button onClick={onClickRandomise}>Randomise</button>
+      </p>
       <ul>
          {players_sorted.map(player => (
-           <Player key={player.id} name={player.name} score={player.score}/>
+           <Player 
+              key={player.id}
+              id={player.id}
+              name={player.name} 
+              score={player.score}
+              incrementScore={incrementScore}
+              resetScore={resetScore}
+              randomiseScore={randomiseScore}
+            />
          ))}
         </ul>
-          <AddPlayer />
+          <AddPlayer addPlayer={addPlayer} />
     </div>
   
   );

@@ -1,0 +1,29 @@
+// src/components/Scoreboard.scss
+
+.Scoreboard {
+    ul {
+      padding: 0;
+    }
+
+    button {
+      position: relative;
+      top: 0;
+      right: 0;
+      bottom: 0;
+
+      padding-left: 0.4rem;
+      padding-top: 0.1rem;
+      margin-left: 0.2rem;
+      background: rgb(255, 255, 255);
+
+      border: 1px solid rgb(227, 230, 229);
+      border-radius: 6px;
+  
+      font-family: inherit;
+      transition: all 0.2s ease;
+  
+      &:hover {
+        background: #a1e7f2;
+      }
+    }
+  }
